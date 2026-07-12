@@ -5,8 +5,7 @@ namespace manaherUI
 
     public partial class Form1 : Form
     {
-        List<Expense> expenses = new List<Expense>();
-        string filePath = "expenses.csv";
+        ExpenseManager manager = new ExpenseManager("expenses.csv");
         string[] categories = { "food", "transport", "fun", "home", "health", "other" };
         string[] categoriesToDisplay = { "all", "food", "transport", "fun", "home", "health", "other" };
         public Form1()
@@ -67,7 +66,7 @@ namespace manaherUI
             dgvExpenses.CellMouseDown += dgvExpenses_CellMouseDown;
             cmbCategory.Items.AddRange(categories);
             cmbFilter.Items.AddRange(categoriesToDisplay);
-            LoadFromFile();
+            RefreshTable();
         }
         private void dgvExpenses_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -80,8 +79,8 @@ namespace manaherUI
         private void RefreshTable()
         {
             dgvExpenses.DataSource = null;
-            dgvExpenses.DataSource = expenses;
-            UpdateTotal(expenses);
+            dgvExpenses.DataSource = manager.GetAll();
+            UpdateTotal(manager.GetAll());
         }
         private void UpdateTotal(List<Expense> list)
         {
@@ -128,8 +127,7 @@ namespace manaherUI
             item.Time = DateTime.Now;
             item.Piece = (int)nmrPiece.Value;
 
-            expenses.Add(item);
-            SaveToFile();
+            manager.Add(item);
             RefreshTable();
 
             txtName.Clear();
@@ -147,58 +145,12 @@ namespace manaherUI
 
 
             string filterCategory = cmbFilter.SelectedItem.ToString();
-            List<Expense> filtered = new List<Expense>();
-            if (filterCategory == "all")
-            {
-                filtered = expenses;
-            }
-            else
-            {
-                foreach (Expense ex in expenses)
-                {
-                    if (ex.Category == filterCategory)
-                    {
-                        filtered.Add(ex);
-                    }
-
-                }
-            }
+            List<Expense> filtered = manager.Filter(filterCategory);
 
             dgvExpenses.DataSource = null;
             dgvExpenses.DataSource = filtered;
             UpdateTotal(filtered);
         }
-        private void SaveToFile()
-        {
-            List<string> lines = new List<string>();
-            foreach (Expense ex in expenses)
-            {
-                string line = ex.Name + ";" + ex.Price + ";" + ex.Category + ";" + ex.Time + ";" + ex.Piece;
-                lines.Add(line);
-            }
-            File.WriteAllLines(filePath, lines);
-        }
-
-        private void LoadFromFile()
-        {
-            if (File.Exists(filePath))
-            {
-                string[] lines = File.ReadAllLines(filePath);
-                foreach (string line in lines)
-                {
-                    string[] fields = line.Split(';');
-                    Expense loaded = new Expense();
-                    loaded.Name = fields[0];
-                    loaded.Price = decimal.Parse(fields[1]);
-                    loaded.Category = fields[2];
-                    loaded.Time = DateTime.Parse(fields[3]);
-                    loaded.Piece = int.Parse(fields[4]);
-                    expenses.Add(loaded);
-                }
-                RefreshTable();
-            }
-        }
-
         private void dgvExpenses_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -237,19 +189,10 @@ namespace manaherUI
 
                 if (result == DialogResult.Yes)
                 {
-                    expenses.Remove(selected);
-                    SaveToFile();
+                    manager.Remove(selected);
                     RefreshTable();
                 }
             }
         }
-    }
-    public class Expense
-    {
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public DateTime Time { get; set; }
-        public int Piece { get; set; }
-        public string Category { get; set; }
     }
 }
