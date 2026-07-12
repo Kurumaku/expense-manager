@@ -21,7 +21,12 @@ namespace manaherUI
         {
             return expenses;
         }
-
+        public void Update(Expense oldItem, Expense newItem) // метод для обновления
+        {
+            int index = expenses.IndexOf(oldItem);
+            expenses[index] = newItem;
+            storage.Save(expenses);
+        }
         public void Add(Expense item)
         {
             expenses.Add(item);

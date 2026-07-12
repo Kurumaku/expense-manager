@@ -11,6 +11,7 @@ namespace manaherUI
         public Form1()
         {
             InitializeComponent();
+            dgvExpenses.CellDoubleClick += dgvExpenses_CellDoubleClick; // регает дабл клик на форме
             // отключаем автогенерацию колонок
             dgvExpenses.AutoGenerateColumns = false;
             dgvExpenses.Columns.Clear();
@@ -89,6 +90,19 @@ namespace manaherUI
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+        private void dgvExpenses_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            Expense selected = (Expense)dgvExpenses.Rows[e.RowIndex].DataBoundItem;
+
+            AddEditForm form = new AddEditForm(categories, selected);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                manager.Update(selected, form.Result);
+                RefreshTable();
+            }
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
