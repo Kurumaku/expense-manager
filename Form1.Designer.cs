@@ -36,6 +36,8 @@
             lblTotal = new Label();
             btnShowByCategory = new Button();
             cmbFilter = new ComboBox();
+            budgetBar = new BudgetProgressBar();
+            btnSetBudget = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvExpenses).BeginInit();
             cmsDelete1.SuspendLayout();
             SuspendLayout();
@@ -112,12 +114,35 @@
             cmbFilter.TabIndex = 7;
             cmbFilter.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
+            // budgetBar
+            // 
+            budgetBar.Location = new Point(12, 12);
+            budgetBar.Name = "budgetBar";
+            budgetBar.Size = new Size(92, 34);
+            budgetBar.TabIndex = 8;
+            budgetBar.Text = "budgetProgressBar1";
+            // 
+            // btnSetBudget
+            // 
+            btnSetBudget.BackColor = Color.Transparent;
+            btnSetBudget.Font = new Font("Unispace", 11.9999981F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSetBudget.ForeColor = Color.SaddleBrown;
+            btnSetBudget.Location = new Point(12, 61);
+            btnSetBudget.Name = "btnSetBudget";
+            btnSetBudget.Size = new Size(92, 46);
+            btnSetBudget.TabIndex = 10;
+            btnSetBudget.Text = "Set Budget";
+            btnSetBudget.UseVisualStyleBackColor = false;
+            btnSetBudget.Click += btnSetBudget_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Salmon;
             ClientSize = new Size(628, 801);
+            Controls.Add(btnSetBudget);
+            Controls.Add(budgetBar);
             Controls.Add(cmbFilter);
             Controls.Add(btnShowByCategory);
             Controls.Add(lblTotal);
@@ -139,5 +164,7 @@
         private ComboBox cmbFilter;
         private ContextMenuStrip cmsDelete1;
         private ToolStripMenuItem menuItemDelete;
+        private BudgetProgressBar budgetBar;
+        private Button btnSetBudget;
     }
 }

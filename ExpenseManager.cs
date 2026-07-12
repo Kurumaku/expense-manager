@@ -9,12 +9,29 @@ namespace manaherUI
     {
         private List<Expense> expenses;
         private ExpenseStorage storage;
-        public decimal BudgetLimit { get; set; }
+        public decimal BudgetLimit { get; set; } = 0;
 
         public ExpenseManager(string filePath)
         {
             storage = new ExpenseStorage(filePath);
             expenses = storage.Load();
+            LoadLimit();
+        }
+        private string limitFilePath = "budget_limit.txt"; // метод установки лимита
+
+        public void SetLimit(decimal limit)
+        {
+            BudgetLimit = limit;
+            File.WriteAllText(limitFilePath, limit.ToString());
+        }
+
+        public void LoadLimit()
+        {
+            if (File.Exists(limitFilePath))
+            {
+                string text = File.ReadAllText(limitFilePath);
+                BudgetLimit = decimal.Parse(text);
+            }
         }
 
         public List<Expense> GetAll()
@@ -49,5 +66,7 @@ namespace manaherUI
         {
             return list.Sum(ex => ex.Price);
         }
+        
+
     }
 }

@@ -66,6 +66,7 @@ namespace manaherUI
             dgvExpenses.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
             dgvExpenses.CellMouseDown += dgvExpenses_CellMouseDown;
             cmbFilter.Items.AddRange(categoriesToDisplay);
+            UpdateBudgetDisplay();
             RefreshTable();
         }
         private void dgvExpenses_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -81,6 +82,7 @@ namespace manaherUI
             dgvExpenses.DataSource = null;
             dgvExpenses.DataSource = manager.GetAll();
             UpdateTotal(manager.GetAll());
+            UpdateBudgetDisplay();
         }
         private void UpdateTotal(List<Expense> list)
         {
@@ -119,7 +121,20 @@ namespace manaherUI
         {
 
         }
-
+        private void UpdateBudgetDisplay() //обновляет бар
+        {
+            decimal spent = manager.GetTotal(manager.GetAll());
+            budgetBar.SetValues(spent, manager.BudgetLimit);
+        }
+        private void btnSetBudget_Click(object sender, EventArgs e) // метод для открытия окна бюджета
+        {
+            SetLimitForm form = new SetLimitForm(manager.BudgetLimit);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                manager.SetLimit(form.LimitResult);
+                UpdateBudgetDisplay();
+            }
+        }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -193,5 +208,7 @@ namespace manaherUI
                 }
             }
         }
+
+    
     }
 }
