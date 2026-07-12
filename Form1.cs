@@ -64,7 +64,6 @@ namespace manaherUI
             dgvExpenses.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
             dgvExpenses.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
             dgvExpenses.CellMouseDown += dgvExpenses_CellMouseDown;
-            cmbCategory.Items.AddRange(categories);
             cmbFilter.Items.AddRange(categoriesToDisplay);
             RefreshTable();
         }
@@ -111,28 +110,14 @@ namespace manaherUI
         {
 
         }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (cmbCategory.SelectedItem == null)
+            AddEditForm form = new AddEditForm(categories);
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("choose category");
-                return;
+                manager.Add(form.Result);
+                RefreshTable();
             }
-
-            Expense item = new Expense();
-            item.Name = txtName.Text;
-            item.Price = decimal.Parse(txtPrice.Text);
-            item.Category = cmbCategory.SelectedItem.ToString();
-            item.Time = DateTime.Now;
-            item.Piece = (int)nmrPiece.Value;
-
-            manager.Add(item);
-            RefreshTable();
-
-            txtName.Clear();
-            txtPrice.Clear();
-            nmrPiece.ResetText();
         }
 
         private void btnShowByCategory_Click(object sender, EventArgs e)
