@@ -99,13 +99,13 @@
             // 
             cmsDelete1.Items.AddRange(new ToolStripItem[] { menuItemDelete });
             cmsDelete1.Name = "contextMenuStrip1";
-            cmsDelete1.Size = new Size(181, 48);
+            cmsDelete1.Size = new Size(108, 26);
             cmsDelete1.Opening += cmsDelete1_Opening;
             // 
             // menuItemDelete
             // 
             menuItemDelete.Name = "menuItemDelete";
-            menuItemDelete.Size = new Size(180, 22);
+            menuItemDelete.Size = new Size(107, 22);
             menuItemDelete.Text = "Delete";
             menuItemDelete.Click += menuItemDelete_Click;
             // 
