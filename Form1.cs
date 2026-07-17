@@ -6,8 +6,7 @@ namespace manaherUI
     public partial class Form1 : Form
     {
         ExpenseManager manager = new ExpenseManager("expenses.csv");
-        string[] categories = { "food", "transport", "fun", "home", "health", "other" };
-        string[] categoriesToDisplay = { "all", "food", "transport", "fun", "home", "health", "other" };
+        CategoryManager categoryManager = new CategoryManager();
         public Form1()
         {
             InitializeComponent();
@@ -65,7 +64,8 @@ namespace manaherUI
             dgvExpenses.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
             dgvExpenses.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
             dgvExpenses.CellMouseDown += dgvExpenses_CellMouseDown;
-            cmbFilter.Items.AddRange(categoriesToDisplay);
+            cmbFilter.Items.Clear();
+            cmbFilter.Items.AddRange(categoryManager.GetAllWithAll().ToArray());
             UpdateBudgetDisplay();
             RefreshTable();
         }
@@ -99,7 +99,7 @@ namespace manaherUI
 
             Expense selected = (Expense)dgvExpenses.Rows[e.RowIndex].DataBoundItem;
 
-            AddEditForm form = new AddEditForm(categories, selected);
+            AddEditForm form = new AddEditForm(categoryManager.GetAll().ToArray(), selected);
             if (form.ShowDialog() == DialogResult.OK)
             {
                 manager.Update(selected, form.Result);
@@ -141,14 +141,22 @@ namespace manaherUI
         }
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddEditForm form = new AddEditForm(categories);
+            AddEditForm form = new AddEditForm(categoryManager.GetAll().ToArray());
             if (form.ShowDialog() == DialogResult.OK)
             {
                 manager.Add(form.Result);
                 RefreshTable();
             }
         }
+        private void btnManageCategories_Click(object sender, EventArgs e) //обработчик категорий
+        {
+            ManageCategoriesForm form = new ManageCategoriesForm(categoryManager, manager.GetAll());
+            form.ShowDialog();
 
+            // обновить список категорий в фильтре после закрытия окна
+            cmbFilter.Items.Clear();
+            cmbFilter.Items.AddRange(categoryManager.GetAllWithAll().ToArray());
+        }
         private void btnShowByCategory_Click(object sender, EventArgs e)
         {
             if (cmbFilter.SelectedItem == null)

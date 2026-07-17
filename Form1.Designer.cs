@@ -38,8 +38,15 @@
             cmbFilter = new ComboBox();
             budgetBar = new BudgetProgressBar();
             btnSetBudget = new Button();
+            tabControl1 = new TabControl();
+            tabMain = new TabPage();
+            tabExpenses = new TabPage();
+            btnManageCategories = new Button();
+            tabBudget = new TabPage();
             ((System.ComponentModel.ISupportInitialize)dgvExpenses).BeginInit();
             cmsDelete1.SuspendLayout();
+            tabControl1.SuspendLayout();
+            tabExpenses.SuspendLayout();
             SuspendLayout();
             // 
             // btnAdd
@@ -47,7 +54,7 @@
             btnAdd.BackColor = Color.Transparent;
             btnAdd.Font = new Font("Unispace", 11.9999981F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAdd.ForeColor = Color.SaddleBrown;
-            btnAdd.Location = new Point(12, 174);
+            btnAdd.Location = new Point(15, 25);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(75, 37);
             btnAdd.TabIndex = 3;
@@ -60,11 +67,11 @@
             dgvExpenses.BackgroundColor = Color.MistyRose;
             dgvExpenses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvExpenses.ContextMenuStrip = cmsDelete1;
-            dgvExpenses.Location = new Point(12, 217);
+            dgvExpenses.Location = new Point(15, 86);
             dgvExpenses.Name = "dgvExpenses";
             dgvExpenses.ReadOnly = true;
             dgvExpenses.ScrollBars = ScrollBars.Vertical;
-            dgvExpenses.Size = new Size(583, 540);
+            dgvExpenses.Size = new Size(467, 498);
             dgvExpenses.TabIndex = 4;
             dgvExpenses.CellContentClick += dgvExpenses_CellContentClick;
             // 
@@ -85,7 +92,7 @@
             // lblTotal
             // 
             lblTotal.BackColor = Color.Transparent;
-            lblTotal.Location = new Point(12, 760);
+            lblTotal.Location = new Point(15, 587);
             lblTotal.Name = "lblTotal";
             lblTotal.Size = new Size(92, 23);
             lblTotal.TabIndex = 5;
@@ -97,9 +104,9 @@
             // 
             btnShowByCategory.Font = new Font("Unispace", 11.9999981F, FontStyle.Bold);
             btnShowByCategory.ForeColor = Color.SaddleBrown;
-            btnShowByCategory.Location = new Point(428, 12);
+            btnShowByCategory.Location = new Point(114, 25);
             btnShowByCategory.Name = "btnShowByCategory";
-            btnShowByCategory.Size = new Size(167, 26);
+            btnShowByCategory.Size = new Size(167, 37);
             btnShowByCategory.TabIndex = 6;
             btnShowByCategory.Text = "Choose Category";
             btnShowByCategory.UseVisualStyleBackColor = true;
@@ -108,17 +115,18 @@
             // cmbFilter
             // 
             cmbFilter.FormattingEnabled = true;
-            cmbFilter.Location = new Point(428, 44);
+            cmbFilter.Location = new Point(315, 34);
             cmbFilter.Name = "cmbFilter";
             cmbFilter.Size = new Size(167, 23);
             cmbFilter.TabIndex = 7;
+            cmbFilter.Text = "Category";
             cmbFilter.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
             // budgetBar
             // 
-            budgetBar.Location = new Point(12, 12);
+            budgetBar.Location = new Point(488, 532);
             budgetBar.Name = "budgetBar";
-            budgetBar.Size = new Size(92, 34);
+            budgetBar.Size = new Size(122, 52);
             budgetBar.TabIndex = 8;
             budgetBar.Text = "budgetProgressBar1";
             // 
@@ -127,7 +135,7 @@
             btnSetBudget.BackColor = Color.Transparent;
             btnSetBudget.Font = new Font("Unispace", 11.9999981F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSetBudget.ForeColor = Color.SaddleBrown;
-            btnSetBudget.Location = new Point(12, 61);
+            btnSetBudget.Location = new Point(505, 480);
             btnSetBudget.Name = "btnSetBudget";
             btnSetBudget.Size = new Size(92, 46);
             btnSetBudget.TabIndex = 10;
@@ -135,24 +143,79 @@
             btnSetBudget.UseVisualStyleBackColor = false;
             btnSetBudget.Click += btnSetBudget_Click;
             // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(tabMain);
+            tabControl1.Controls.Add(tabExpenses);
+            tabControl1.Controls.Add(tabBudget);
+            tabControl1.Location = new Point(2, 3);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(624, 638);
+            tabControl1.TabIndex = 11;
+            // 
+            // tabMain
+            // 
+            tabMain.Location = new Point(4, 24);
+            tabMain.Name = "tabMain";
+            tabMain.Padding = new Padding(3);
+            tabMain.Size = new Size(616, 610);
+            tabMain.TabIndex = 0;
+            tabMain.Text = "Menu";
+            tabMain.UseVisualStyleBackColor = true;
+            // 
+            // tabExpenses
+            // 
+            tabExpenses.Controls.Add(btnManageCategories);
+            tabExpenses.Controls.Add(dgvExpenses);
+            tabExpenses.Controls.Add(btnAdd);
+            tabExpenses.Controls.Add(btnSetBudget);
+            tabExpenses.Controls.Add(lblTotal);
+            tabExpenses.Controls.Add(budgetBar);
+            tabExpenses.Controls.Add(btnShowByCategory);
+            tabExpenses.Controls.Add(cmbFilter);
+            tabExpenses.Location = new Point(4, 24);
+            tabExpenses.Name = "tabExpenses";
+            tabExpenses.Padding = new Padding(3);
+            tabExpenses.Size = new Size(616, 610);
+            tabExpenses.TabIndex = 1;
+            tabExpenses.Text = "Expenses";
+            tabExpenses.UseVisualStyleBackColor = true;
+            // 
+            // btnManageCategories
+            // 
+            btnManageCategories.Location = new Point(505, 25);
+            btnManageCategories.Name = "btnManageCategories";
+            btnManageCategories.Size = new Size(92, 35);
+            btnManageCategories.TabIndex = 11;
+            btnManageCategories.Text = "Categories";
+            btnManageCategories.UseVisualStyleBackColor = true;
+            btnManageCategories.Click += btnManageCategories_Click;
+            // 
+            // tabBudget
+            // 
+            tabBudget.Location = new Point(4, 24);
+            tabBudget.Name = "tabBudget";
+            tabBudget.Padding = new Padding(3);
+            tabBudget.Size = new Size(616, 610);
+            tabBudget.TabIndex = 2;
+            tabBudget.Text = "Budget Planner";
+            tabBudget.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Salmon;
             ClientSize = new Size(628, 801);
-            Controls.Add(btnSetBudget);
-            Controls.Add(budgetBar);
-            Controls.Add(cmbFilter);
-            Controls.Add(btnShowByCategory);
-            Controls.Add(lblTotal);
-            Controls.Add(dgvExpenses);
-            Controls.Add(btnAdd);
+            Controls.Add(tabControl1);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dgvExpenses).EndInit();
             cmsDelete1.ResumeLayout(false);
+            tabControl1.ResumeLayout(false);
+            tabExpenses.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -166,5 +229,10 @@
         private ToolStripMenuItem menuItemDelete;
         private BudgetProgressBar budgetBar;
         private Button btnSetBudget;
+        private TabControl tabControl1;
+        private TabPage tabMain;
+        private TabPage tabExpenses;
+        private TabPage tabBudget;
+        private Button btnManageCategories;
     }
 }
