@@ -82,6 +82,7 @@ namespace manaherUI
             dgvExpenses.DataSource = null;
             dgvExpenses.DataSource = manager.GetAll();
             UpdateTotal(manager.GetAll());
+            RefreshMainMenu();
             UpdateBudgetDisplay();
         }
         private void UpdateTotal(List<Expense> list)
@@ -216,7 +217,58 @@ namespace manaherUI
                 }
             }
         }
+        private void RefreshMainMenu()
+        {
+            List<Expense> all = manager.GetAll();
+            decimal total = manager.GetTotal(all);
 
-    
+            lblMainTotal.Text = "Spent this month: " + total;
+            mainBudgetBar.SetValues(total, manager.BudgetLimit);
+
+            // топ категорий по сумме трат
+            var topCategories = all
+                .GroupBy(ex => ex.Category)
+                .Select(g => new { Category = g.Key, Sum = g.Sum(ex => ex.Price) })
+                .OrderByDescending(g => g.Sum)
+                .Take(3)
+                .ToList();
+
+            lstTopCategories.Items.Clear();
+            foreach (var item in topCategories)
+            {
+                lstTopCategories.Items.Add(item.Category + ": " + item.Sum);
+            }
+
+            // последние 5 трат
+            var recent = all
+                .OrderByDescending(ex => ex.Time)
+                .Take(5)
+                .ToList();
+
+            lstRecentExpenses.Items.Clear();
+            foreach (Expense ex in recent)
+            {
+                lstRecentExpenses.Items.Add(ex.Time.ToString("dd.MM") + " - " + ex.Name + " - " + ex.Price);
+            }
+        }
+        private void btnQuickAdd_Click(object sender, EventArgs e)
+        {
+            AddEditForm form = new AddEditForm(categoryManager.GetAll().ToArray());
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                manager.Add(form.Result);
+                RefreshTable();
+            }
+        }
+
+        private void budgetBar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblMainTotal_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
